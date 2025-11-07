@@ -2,17 +2,52 @@
   "name": "@cli-new/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "type": "module",
+  "scripts": {
+    "prepare": "husky",
+    "build": "nx run-many --target=build --all",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
   "private": true,
-  "dependencies": {},
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@nx/js": "22.0.2",
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@types/node": "20.19.9",
+    "@vitest/coverage-v8": "^4.0.8",
+    "@vitest/ui": "^4.0.8",
+    "eslint": "^9.39.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
     "nx": "22.0.2",
-    "prettier": "^2.6.2",
+    "prettier": "^3.6.2",
     "tslib": "^2.3.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.46.3",
+    "verdaccio": "^6.0.5",
+    "vite": "^7.2.2",
+    "vitest": "^4.0.8"
+  },
+  "nx": {
+    "includedScripts": [],
+    "targets": {
+      "local-registry": {
+        "executor": "@nx/js:verdaccio",
+        "options": {
+          "port": 4873,
+          "config": ".verdaccio/config.yml",
+          "storage": "tmp/local-registry/storage"
+        }
+      }
+    }
   }
 }
