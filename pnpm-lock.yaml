@@ -67,6 +67,12 @@ importers:
 
   packages/cli:
     dependencies:
+      chalk:
+        specifier: ^5.6.2
+        version: 5.6.2
+      commander:
+        specifier: ^14.0.2
+        version: 14.0.2
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
@@ -2965,6 +2971,13 @@ packages:
         integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==,
       }
     engines: { node: '>=10' }
+
+  chalk@5.6.2:
+    resolution:
+      {
+        integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==,
+      }
+    engines: { node: ^12.17.0 || ^14.13 || >=16.0.0 }
 
   clean-git-ref@2.0.1:
     resolution:
@@ -8680,6 +8693,8 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+
+  chalk@5.6.2: {}
 
   clean-git-ref@2.0.1: {}
 

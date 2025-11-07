@@ -1,10 +1,14 @@
 {
   "name": "@dxworks/cli",
   "version": "0.0.1",
+  "description": "DXWorks CLI for managing plugins and tools",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "dxw": "./dist/index.js"
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -19,6 +23,8 @@
     "!**/*.tsbuildinfo"
   ],
   "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
     "tslib": "^2.3.0"
   }
 }
