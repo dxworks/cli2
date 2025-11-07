@@ -24,6 +24,19 @@ This document outlines the complete migration strategy from the legacy lerna-bas
 
 ---
 
+## Commit Process
+
+**IMPORTANT:** Before every commit, follow these steps:
+
+1. Run tests: `pnpm test`
+2. Run lint: `pnpm lint`
+3. Fix any linting errors: `pnpm lint:fix` (if needed)
+4. Commit changes
+
+This ensures the pre-commit hooks won't fail and maintains code quality.
+
+---
+
 ## Phase 0: New Project Setup
 
 ### Step 0.1: Initialize Nx Workspace
