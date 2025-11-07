@@ -1,1 +1,1 @@
-export * from './lib/common.js';
+export * from './logging.js';

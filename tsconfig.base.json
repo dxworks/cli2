@@ -17,10 +17,11 @@
     "strict": true,
     "target": "es2022",
     "customConditions": ["@cli-new/source"],
+    "baseUrl": ".",
     "paths": {
-      "@dxworks/common": ["packages/common/src/index.ts"],
-      "@dxworks/cli": ["packages/cli/src/index.ts"],
-      "@dxworks/voyenv": ["packages/voyenv/src/index.ts"]
+      "@dxworks/common": ["./packages/common/src/index.ts"],
+      "@dxworks/cli": ["./packages/cli/src/index.ts"],
+      "@dxworks/voyenv": ["./packages/voyenv/src/index.ts"]
     }
   }
 }
