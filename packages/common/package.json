@@ -12,6 +12,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./src/*": {
+      "@cli-new/source": "./src/*",
+      "default": "./dist/*"
     }
   },
   "files": [
