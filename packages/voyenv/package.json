@@ -47,6 +47,9 @@
     "tslib": "^2.3.0",
     "yaml": "^2.8.1"
   },
+  "scripts": {
+    "postbuild": "copyfiles -u 1 \"src/assets/**/*\" dist"
+  },
   "devDependencies": {
     "@types/cli-progress": "^3.11.6",
     "@types/semver": "^7.7.1",
