@@ -31,7 +31,9 @@ export async function install(file: string, _options: unknown): Promise<void> {
 
   log.info(`Setting up release ${voyenv.name}`);
 
-  const voyenvDir = path.resolve(path.dirname(file));
+  const voyenvDir = path.dirname(path.resolve(file));
+  log.info(`voyenvDir: ${voyenvDir}, type: ${typeof voyenvDir}`);
+  log.info(`voyenv.name: ${voyenv.name}, type: ${typeof voyenv.name}`);
   const rootDir = path.join(voyenvDir, voyenv.name);
   fs.mkdirSync(rootDir, { recursive: true });
 
