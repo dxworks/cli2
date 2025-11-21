@@ -29,7 +29,7 @@ export function extractOwnerAndRepo(name: string): string[] {
  * Default Octokit instance
  * Uses GH_TOKEN environment variable if available for authentication
  */
-export const defaultOctokit = process.env.GH_TOKEN
+export const defaultOctokit: Octokit = process.env.GH_TOKEN
   ? new Octokit({
       auth: process.env.GH_TOKEN,
       userAgent: 'dxworks-cli',

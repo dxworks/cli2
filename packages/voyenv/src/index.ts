@@ -1,1 +1,5 @@
-export * from './lib/voyenv.js';
+#!/usr/bin/env node
+
+import { voyenvCommand } from './voyenv.js';
+
+voyenvCommand.parse(process.argv);

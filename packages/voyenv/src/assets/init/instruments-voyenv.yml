@@ -1,0 +1,24 @@
+name: { voyagerName }
+
+voyager_version: { voyagerVersion }
+
+instruments:
+  - name: dxworks/inspector-git
+    asset: iglog.zip
+  - name: dxworks/insider
+    asset: insider-voyager.zip
+  - name: dxworks/dude
+    asset: dude-voyager.zip
+  - name: dxworks/lizard
+  - name: dxworks/honeydew
+    asset: honeydew.zip
+  - name: dxworks/jafax
+    asset: jafax.zip
+  - name: dxworks/depminer
+    asset: depminer.zip
+  - name: dxworks/codeframe
+    asset: codeframe-voyager.zip
+
+tokens:
+
+runtimes:

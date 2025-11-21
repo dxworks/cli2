@@ -1,0 +1,11 @@
+name: { voyagerName }
+
+voyager_version: { voyagerVersion }
+
+instruments:
+  - name: dxworks/inspector-git
+    asset: iglog.zip
+
+tokens:
+
+runtimes:
