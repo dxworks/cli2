@@ -1,9 +1,27 @@
 import { execaSync, type Options } from 'execa';
 import { npmExePath, pluginsFolder } from './utils.js';
 
+export interface NpmListDependency {
+  version: string;
+  resolved?: string;
+}
+
+export type NpmListDependencies = Record<string, NpmListDependency>;
+
 export interface NpmListResult {
-  dependencies?: Record<string, any>;
-  [key: string]: any;
+  dependencies?: NpmListDependencies;
+  [key: string]: unknown;
+}
+
+export interface NpmInfoResult {
+  name: string;
+  description: string;
+  'dist-tags': {
+    latest: string;
+    [key: string]: string;
+  };
+  versions: string[];
+  [key: string]: unknown;
 }
 
 /**
@@ -36,10 +54,8 @@ export function versionsFor(module: string): string[] {
  * @param json - Whether to parse as JSON
  * @returns Module information
  */
-export function info(module: string, field = '', json = true): any {
-  const result = npmCommand(`info ${module} ${field} ${json ? '--json' : ''}`, {
-    cwd: __dirname,
-  });
+export function info(module: string, field = '', json = true): NpmInfoResult {
+  const result = npmCommand(`info ${module} ${field} ${json ? '--json' : ''}`);
   return JSON.parse(result);
 }
 
