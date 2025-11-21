@@ -22,7 +22,7 @@ export const voyenvInstall = new Command()
   )
   .action(install);
 
-export async function install(file: string): Promise<void> {
+export async function install(file: string, _options: unknown): Promise<void> {
   log.info(`Installing Voyager from ${file}`);
 
   const voyenvString = fs.readFileSync(file, 'utf-8');
