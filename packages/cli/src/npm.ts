@@ -1,4 +1,4 @@
-import { execaSync, type Options } from 'execa';
+import { execaSync, type SyncOptions } from 'execa';
 import { npmExePath, pluginsFolder } from './utils.js';
 
 export interface NpmListDependency {
@@ -24,6 +24,8 @@ export interface NpmInfoResult {
   [key: string]: unknown;
 }
 
+export type NpmCommandOptions = Pick<SyncOptions, 'cwd' | 'stdio' | 'shell'>;
+
 /**
  * List installed packages
  * @param options - npm ls options
@@ -32,7 +34,7 @@ export interface NpmInfoResult {
  */
 export function list(
   options = '--depth=0 --omit=dev --json',
-  processOptions?: Options,
+  processOptions?: NpmCommandOptions,
 ): NpmListResult {
   const result = npmCommand(`ls ${options}`, processOptions);
   return JSON.parse(result);
@@ -44,7 +46,8 @@ export function list(
  * @returns Array of version strings
  */
 export function versionsFor(module: string): string[] {
-  return info(module, 'versions') as string[];
+  const result = npmCommand(`info ${module} versions --json`);
+  return JSON.parse(result) as string[];
 }
 
 /**
@@ -148,15 +151,19 @@ export function link(
  * @param options - Execution options
  * @returns Command output
  */
-export function npmCommand(args: string, options?: Options): string {
-  const defaultOptions: Options = {
+export function npmCommand(args: string, options?: NpmCommandOptions): string {
+  const defaultOptions: NpmCommandOptions = {
     cwd: pluginsFolder,
   };
 
   const mergedOptions = { ...defaultOptions, ...options };
 
-  const result = execaSync(npmExePath, args.split(' '), mergedOptions);
-  return result.stdout;
+  const result = execaSync(
+    npmExePath,
+    args.split(' ').filter(Boolean),
+    mergedOptions,
+  );
+  return typeof result.stdout === 'string' ? result.stdout : '';
 }
 
 export const npm = {
