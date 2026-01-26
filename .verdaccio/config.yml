@@ -26,3 +26,6 @@ log:
 
 publish:
   allow_offline: true # set offline to true to allow publish offline
+
+# Allow large packages (dx.jar is ~10MB)
+max_body_size: 50mb

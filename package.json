@@ -49,5 +49,8 @@
         }
       }
     }
+  },
+  "dependencies": {
+    "@dxworks/jafax": "^0.5.3"
   }
 }
