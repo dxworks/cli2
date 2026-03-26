@@ -1,10 +1,162 @@
-# CliNew
+# DXWorks CLI
+
+The DXWorks CLI (`dxw`) is a command-line tool for managing DXWorks plugins and tools. It provides a plugin-based architecture that allows extending functionality through installable packages.
+
+## Overview
+
+This is an Nx monorepo containing the following packages:
+
+| Package           | Description                                              |
+| ----------------- | -------------------------------------------------------- |
+| `@dxworks/cli`    | Main CLI application with plugin and hub commands        |
+| `@dxworks/common` | Shared utilities (logging, downloads, git, compression)  |
+| `@dxworks/voyenv` | Voyager environment CLI for managing instrument releases |
+
+## DXW CLI Commands
+
+The `dxw` CLI provides the following commands:
+
+### Plugin Commands
+
+| Command                             | Aliases         | Description                                                      |
+| ----------------------------------- | --------------- | ---------------------------------------------------------------- |
+| `dxw plugin list`                   | `ls`            | List installed plugins. Use `-a` to show all available plugins   |
+| `dxw plugin install <plugins...>`   | `i`, `add`      | Install plugins. Use `-a` for all, `-f` to force unknown plugins |
+| `dxw plugin update [plugins...]`    | `upgrade`, `up` | Update plugins. Use `-l` for latest versions                     |
+| `dxw plugin outdated`               | -               | List outdated plugins                                            |
+| `dxw plugin uninstall <plugins...>` | `remove`, `rm`  | Uninstall plugins                                                |
+| `dxw plugin link [path]`            | `ln`            | Link a local project as a plugin                                 |
+
+### Hub Commands
+
+| Command           | Aliases                | Description                     |
+| ----------------- | ---------------------- | ------------------------------- |
+| `dxw hub update`  | `pull`, `fetch`, `get` | Update dxworks-hub data         |
+| `dxw hub refresh` | `reset`, `rs`          | Remove and re-clone dxworks-hub |
+
+---
+
+## Running the CLI Locally
+
+```bash
+# Build the CLI
+pnpm build
+
+# Run directly
+node packages/cli/dist/index.js --help
+
+# Or link globally for development
+cd packages/cli && npm link
+dxw --help
+```
+
+---
+
+## How to Add New Commands
+
+To add a new command to the CLI:
+
+1. **Create the command file** in `packages/cli/src/commands/<group>/<command>.ts`
+2. **Export a Commander Command instance** with name, description, options, and action
+3. **Register in the group index file** (e.g., `packages/cli/src/commands/plugin/index.ts`)
+4. **If creating a new group**, register it in `packages/cli/src/index.ts`
+
+### Example Command
+
+```typescript
+// packages/cli/src/commands/plugin/example.ts
+import { Command } from 'commander';
+
+export const pluginExample = new Command()
+  .name('example')
+  .alias('ex') // Optional alias
+  .description('An example command')
+  .argument('[name]', 'Optional argument') // Use <name> for required
+  .option('-f, --flag', 'A boolean flag', false)
+  .action(async (name: string | undefined, options: { flag: boolean }) => {
+    console.log(`Hello ${name ?? 'world'}!`);
+    if (options.flag) {
+      console.log('Flag was set');
+    }
+  });
+```
+
+Then register it in the group index:
+
+```typescript
+// packages/cli/src/commands/plugin/index.ts
+import { pluginExample } from './example.js';
+
+export const pluginCommand = new Command()
+  .name('plugin')
+  .description('handles dxworks cli plugins')
+  .addCommand(pluginExample); // Add new command here
+```
+
+---
+
+## Quick Start
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build all packages
+pnpm build
+
+# Run tests
+pnpm test
+
+# Lint code
+pnpm lint
+```
+
+## Common pnpm Commands
+
+```bash
+pnpm install              # Install all dependencies
+pnpm build                # Build all packages
+pnpm test                 # Run all tests
+pnpm test:watch           # Run tests in watch mode
+pnpm test:coverage        # Run tests with coverage report
+pnpm lint                 # Check for lint errors
+pnpm lint:fix             # Auto-fix lint errors
+pnpm format               # Format code with Prettier
+```
+
+### Package-Specific Commands
+
+```bash
+pnpm nx build cli         # Build only the CLI package
+pnpm nx test common       # Test only the common package
+pnpm nx lint voyenv       # Lint only the voyenv package
+```
+
+## Adding a New Library/Package
+
+To add a new library to the workspace:
+
+```bash
+# Create a publishable library
+npx nx g @nx/js:lib packages/my-lib --publishable --importPath=@dxworks/my-lib
+
+# Create an internal library (not published)
+npx nx g @nx/js:lib packages/my-lib --importPath=@dxworks/my-lib
+```
+
+After generating:
+
+1. Update the `package.json` with appropriate dependencies
+2. Configure exports in `package.json` if needed
+3. Add the package to workspace dependencies where it's used
+
+---
+
+## Nx Workspace
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
-
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+This workspace is built with [Nx](https://nx.dev). Run `npx nx graph` to visually explore the project structure.
 
 ## Generate a library
 
