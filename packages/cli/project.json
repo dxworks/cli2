@@ -1,0 +1,10 @@
+{
+  "name": "@dxworks/cli",
+  "targets": {
+    "build": {
+      "options": {
+        "command": "tsc --build tsconfig.lib.json && cp -r src/assets dist/assets"
+      }
+    }
+  }
+}

@@ -11,8 +11,9 @@ const __dirname = path.dirname(__filename);
 const packageJsonPath = path.resolve(__dirname, '../package.json');
 export const _package = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
 
-// DXW root folder in user's home directory
-export const dxwFolder = path.resolve(homedir(), '.dxw');
+// DXW root folder - configurable via DXW_HOME env var, defaults to ~/.dxw
+export const dxwFolder =
+  process.env.DXW_HOME || path.resolve(homedir(), '.dxw');
 
 // Plugins folder in ~/.dxw/plugins
 export const pluginsFolder = path.resolve(dxwFolder, 'plugins');

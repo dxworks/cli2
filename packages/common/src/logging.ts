@@ -6,8 +6,9 @@ import { mkdirSync } from 'node:fs';
 const { json, errors, timestamp, prettyPrint, colorize, combine, printf } =
   format;
 
-// DXW root folder in user's home directory
-export const dxwFolder = path.resolve(homedir(), '.dxw');
+// DXW root folder - configurable via DXW_HOME env var, defaults to ~/.dxw
+export const dxwFolder =
+  process.env.DXW_HOME || path.resolve(homedir(), '.dxw');
 
 // Ensure logs directory exists
 const logsDir = path.resolve(dxwFolder, 'logs');
