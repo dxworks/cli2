@@ -1,5 +1,5 @@
 {
-  "name": "cli",
+  "name": "@dxworks/cli",
   "targets": {
     "build": {
       "options": {

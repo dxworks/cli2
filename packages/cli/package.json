@@ -1,6 +1,6 @@
 {
   "name": "@dxworks/cli",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "DXWorks CLI for managing plugins and tools",
   "type": "module",
   "main": "./dist/index.js",
@@ -17,6 +17,9 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "dist",
