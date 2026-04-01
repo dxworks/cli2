@@ -1,10 +1,10 @@
-name: { voyagerName }
+name: {voyagerName}
 
-voyager_version: { voyagerVersion }
+voyager_version: {voyagerVersion}
 
 instruments:
   - name: dxworks/inspector-git
-    asset: iglog.zip
+    asset: iglog-voyager.zip
   - name: dxworks/insider
     asset: insider-voyager.zip
   - name: dxworks/dude
@@ -15,7 +15,7 @@ instruments:
   - name: dxworks/jafax
     asset: jafax.zip
   - name: dxworks/depminer
-    asset: depminer.zip
+    asset: depminer-voyager.zip
   - name: dxworks/codeframe
     asset: codeframe-voyager.zip
 

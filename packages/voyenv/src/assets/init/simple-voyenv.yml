@@ -1,10 +1,10 @@
-name: { voyagerName }
+name: {voyagerName}
 
-voyager_version: { voyagerVersion }
+voyager_version: {voyagerVersion}
 
 instruments:
   - name: dxworks/inspector-git
-    asset: iglog.zip
+    asset: iglog-voyager.zip
 
 tokens:
 

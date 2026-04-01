@@ -84,6 +84,8 @@ export class InstrumentService {
       });
       fs.rmSync(zipFileName);
       singleBar?.update({ name: instrument.name, state: 'Done' });
+    } else {
+      singleBar?.update({ name: instrument.name, state: 'No release found' });
     }
   }
 
@@ -174,11 +176,13 @@ export class InstrumentService {
       params: Params,
       payload: { name: string; state: string },
     ) {
-      if (payload.state === 'Done') {
-        return `${payload.name.padEnd(maxNameLen)}: ${chalk.green(payload.state.padEnd(15))} [${options.formatBar?.call(null, params.progress, options)}] ${(Math.floor(params.progress * 100) + '').padStart(3)}% | ${humanFileSize(params.value)} / ${humanFileSize(params.total)}`;
-      } else {
-        return `${payload.name.padEnd(maxNameLen)}: ${chalk.yellow(payload.state.padEnd(15))} [${options.formatBar?.call(null, params.progress, options)}] ${(Math.floor(params.progress * 100) + '').padStart(3)}% | ${humanFileSize(params.value)} / ${humanFileSize(params.total)}`;
-      }
+      const name = payload?.name ?? 'unknown';
+      const state = payload?.state ?? 'unknown';
+      const bar = options.formatBar?.call(null, params.progress, options) ?? '';
+      const pct = (Math.floor(params.progress * 100) + '').padStart(3);
+      const size = `${humanFileSize(params.value)} / ${humanFileSize(params.total)}`;
+      const color = state === 'Done' ? chalk.green : chalk.yellow;
+      return `${name.padEnd(maxNameLen)}: ${color(state.padEnd(15))} [${bar}] ${pct}% | ${size}`;
     };
   }
 }
