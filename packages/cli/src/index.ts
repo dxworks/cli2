@@ -43,6 +43,11 @@ function isCommandLike(command: unknown): command is Command {
 function addCompatibilityShims(command: Command): void {
   const cmd = command as unknown as Record<string, unknown>;
 
+  // Allow excess arguments for plugin commands that handle args via process.argv
+  if (typeof command.allowExcessArguments === 'function') {
+    command.allowExcessArguments(true);
+  }
+
   // Add helpGroup if missing (Commander v14 feature for grouping commands in help)
   if (typeof cmd.helpGroup !== 'function') {
     cmd.helpGroup = () => 'Plugin Commands:';
