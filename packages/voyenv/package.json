@@ -1,6 +1,6 @@
 {
   "name": "@dxworks/voyenv",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "A cli utility to create voyager releases",
   "type": "module",
   "main": "./dist/index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@dxworks/cli",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "DXWorks CLI for managing plugins and tools",
   "type": "module",
   "main": "./dist/index.js",
