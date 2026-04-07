@@ -153,6 +153,13 @@ async function loadPluginCommands(cli: Command): Promise<void> {
               // Add compatibility shims for older Commander versions
               addCompatibilityShims(command);
 
+              // Plugin wrappers often forward raw argv to underlying tools.
+              // Allow extra positional args so commands like `dxw dx -init file.zip`
+              // are not rejected by Commander before plugin logic runs.
+              if (typeof command.allowExcessArguments === 'function') {
+                command.allowExcessArguments(true);
+              }
+
               const originalDescription = command.description() || '';
               command.description(`[from: ${plugin}] ${originalDescription}`);
               cli.addCommand(command);
