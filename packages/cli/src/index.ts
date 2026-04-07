@@ -189,7 +189,7 @@ export const cli = createCli();
 // Only parse if this is the main module
 // Use realpathSync to handle symlinks (e.g., when installed via npm link)
 const realArgv1 = realpathSync(process.argv[1]);
-if (import.meta.url === `file://${realArgv1}`) {
+if (import.meta.url === pathToFileURL(realArgv1).href) {
   await initPlugins();
   await loadPluginCommands(cli);
   cli.parse(process.argv);
