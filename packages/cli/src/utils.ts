@@ -2,7 +2,7 @@ import path from 'node:path';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
-import { homedir } from 'node:os';
+import { homedir, platform } from 'node:os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,10 +27,18 @@ export const pluginsPackage = path.resolve(pluginsFolder, 'package.json');
  * @returns Path to the executable
  */
 function getBin(exe: string): string {
+  const lookupCommand = platform() === 'win32' ? 'where' : 'which';
+
   try {
-    return execSync(`which ${exe}`, { encoding: 'utf-8' }).trim();
+    const found = execSync(`${lookupCommand} ${exe}`, {
+      encoding: 'utf-8',
+    })
+      .trim()
+      .split(/\r?\n/)[0];
+
+    return found || exe;
   } catch {
-    return exe; // Fallback to just the name if which fails
+    return exe; // Fallback to just the name if lookup fails
   }
 }
 

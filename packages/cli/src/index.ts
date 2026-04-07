@@ -158,6 +158,13 @@ async function loadPluginCommands(cli: Command): Promise<void> {
               // Add compatibility shims for older Commander versions
               addCompatibilityShims(command);
 
+              // Plugin wrappers often forward raw argv to underlying tools.
+              // Allow extra positional args so commands like `dxw dx -init file.zip`
+              // are not rejected by Commander before plugin logic runs.
+              if (typeof command.allowExcessArguments === 'function') {
+                command.allowExcessArguments(true);
+              }
+
               const originalDescription = command.description() || '';
               command.description(`[from: ${plugin}] ${originalDescription}`);
               cli.addCommand(command);
@@ -194,7 +201,7 @@ export const cli = createCli();
 // Only parse if this is the main module
 // Use realpathSync to handle symlinks (e.g., when installed via npm link)
 const realArgv1 = realpathSync(process.argv[1]);
-if (import.meta.url === `file://${realArgv1}`) {
+if (import.meta.url === pathToFileURL(realArgv1).href) {
   await initPlugins();
   await loadPluginCommands(cli);
   cli.parse(process.argv);
