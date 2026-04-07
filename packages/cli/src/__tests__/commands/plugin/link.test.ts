@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import path from 'node:path';
 
 // Create mocks
 const mockNpmLink = vi.fn();
@@ -66,7 +67,12 @@ describe('plugin link command', () => {
       await pluginLink.parseAsync(['node', 'test', '/path/to/plugin']);
 
       expect(mockNpmLink).toHaveBeenCalledTimes(2);
-      expect(mockNpmLink).toHaveBeenNthCalledWith(1, '', '', '/path/to/plugin');
+      expect(mockNpmLink).toHaveBeenNthCalledWith(
+        1,
+        '',
+        '',
+        path.resolve('/path/to/plugin'),
+      );
       expect(mockNpmLink).toHaveBeenNthCalledWith(
         2,
         '@dxworks/my-plugin',
@@ -83,7 +89,12 @@ describe('plugin link command', () => {
       await pluginLink.parseAsync(['node', 'test', '/path/to/package.json']);
 
       expect(mockNpmLink).toHaveBeenCalledTimes(2);
-      expect(mockNpmLink).toHaveBeenNthCalledWith(1, '', '', '/path/to');
+      expect(mockNpmLink).toHaveBeenNthCalledWith(
+        1,
+        '',
+        '',
+        path.dirname('/path/to/package.json'),
+      );
       expect(mockNpmLink).toHaveBeenNthCalledWith(
         2,
         '@dxworks/my-plugin',
