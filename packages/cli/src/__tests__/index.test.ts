@@ -1,4 +1,18 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+
+vi.mock('@dxworks/common/src/logging.js', () => ({
+  log: {
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+  },
+}));
+
+vi.mock('@dxworks/common/src/dxworks-hub.js', () => ({
+  updateDxworksHub: vi.fn(),
+  dxworksHubDir: '/mock/.dxw/hub',
+}));
+
 import { createCli, cli } from '../index.js';
 
 describe('CLI', () => {
