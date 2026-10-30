@@ -32,6 +32,7 @@ export class VoyagerService {
 
   public async downloadAndInstallVoyager(
     voyagerVersion: string,
+    voyagerAsset?: string,
   ): Promise<void> {
     const release = await this.octokit.rest.repos.getReleaseByTag({
       owner: dxworks,
@@ -46,8 +47,17 @@ export class VoyagerService {
       Presets.shades_classic,
     );
 
+    // The asset named in voyenv.yml, or the release's first file
+    const asset = voyagerAsset
+      ? release.data.assets.find((it) => it.name === voyagerAsset)
+      : release.data.assets[0];
+    if (!asset)
+      throw new Error(
+        `Asset ${voyagerAsset} not found in Voyager release ${voyagerVersion}`,
+      );
+
     const voyagerArchive = await downloadFile(
-      release.data.assets[0].browser_download_url,
+      asset.browser_download_url,
       path.resolve(this.directory, voyagerAssetName),
       { action: 'Downloading' },
       progressBar,

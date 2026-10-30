@@ -42,6 +42,7 @@ export async function install(file: string, _options: unknown): Promise<void> {
   log.info('Downloading voyager');
   await new VoyagerService(octokit, rootDir).downloadAndInstallVoyager(
     voyenv.voyager_version,
+    voyenv.voyager_asset,
   );
   log.info('Downloading Instruments');
   await new InstrumentService(octokit, rootDir).downloadInstruments(

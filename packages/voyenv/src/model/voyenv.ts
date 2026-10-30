@@ -16,6 +16,7 @@ export interface RuntimeConfig {
 export interface Voyenv {
   name: string;
   voyager_version: string;
+  voyager_asset?: string;
   instruments: InstrumentConfig[];
   runtimes?: Map<string, RuntimeConfig>;
   token?: string;
