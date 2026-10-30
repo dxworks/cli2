@@ -3,3 +3,5 @@
 /coverage
 /.nx/cache
 /.nx/workspace-data
+# Template files with string-template placeholders
+packages/voyenv/src/assets/init/

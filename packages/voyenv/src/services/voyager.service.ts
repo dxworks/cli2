@@ -32,6 +32,7 @@ export class VoyagerService {
 
   public async downloadAndInstallVoyager(
     voyagerVersion: string,
+    voyagerAsset?: string,
   ): Promise<void> {
     const release = await this.octokit.rest.repos.getReleaseByTag({
       owner: dxworks,
@@ -46,8 +47,17 @@ export class VoyagerService {
       Presets.shades_classic,
     );
 
+    // The asset named in voyenv.yml, or the release's first file
+    const asset = voyagerAsset
+      ? release.data.assets.find((it) => it.name === voyagerAsset)
+      : release.data.assets[0];
+    if (!asset)
+      throw new Error(
+        `Asset ${voyagerAsset} not found in Voyager release ${voyagerVersion}`,
+      );
+
     const voyagerArchive = await downloadFile(
-      release.data.assets[0].browser_download_url,
+      asset.browser_download_url,
       path.resolve(this.directory, voyagerAssetName),
       { action: 'Downloading' },
       progressBar,
@@ -73,18 +83,15 @@ export class VoyagerService {
       ),
     );
     fs.rmSync(voyagerDir, { recursive: true, force: true });
-    fs.cpSync(
-      getAssetFile('install/default-config.yml'),
-      path.resolve(this.directory, configFile),
-    );
-    fs.cpSync(
-      getAssetFile('install/default-doctor.yml'),
-      path.resolve(this.directory, doctorFile),
-    );
-    fs.cpSync(
-      getAssetFile('install/default-mission.yml'),
-      path.resolve(this.directory, missionFile),
-    );
+    // The engine zip's own files win; the defaults only fill in what it lacks
+    [
+      ['install/default-config.yml', configFile],
+      ['install/default-doctor.yml', doctorFile],
+      ['install/default-mission.yml', missionFile],
+    ].forEach(([asset, file]) => {
+      const target = path.resolve(this.directory, file);
+      if (!fs.existsSync(target)) fs.cpSync(getAssetFile(asset), target);
+    });
     fs.chmodSync(path.resolve(this.directory, 'voyager.sh'), '755');
     progressBar.stop();
   }

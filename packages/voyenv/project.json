@@ -1,0 +1,10 @@
+{
+  "name": "@dxworks/voyenv",
+  "targets": {
+    "build": {
+      "options": {
+        "command": "tsc --build tsconfig.lib.json && copyfiles -u 1 \"src/assets/**/*\" dist"
+      }
+    }
+  }
+}

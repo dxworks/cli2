@@ -39,6 +39,16 @@ export async function unzip(
   zipFileName: string,
   options?: UnzipOptions,
 ): Promise<void> {
+  // The permissions stored in the zip (unix zips only), so programs stay executable
+  const modes = new Map<string, number>();
+  if (options?.overwriteRootDir) {
+    const directory = await unzipper.Open.file(zipFileName);
+    directory.files.forEach((file) => {
+      const mode = (file.externalFileAttributes >>> 16) & 0o777;
+      if (file.versionMadeBy >> 8 === 3 && mode) modes.set(file.path, mode);
+    });
+  }
+  const writes: Promise<unknown>[] = [];
   return new Promise((resolve, reject) => {
     if (options?.overwriteRootDir) {
       createReadStream(zipFileName)
@@ -59,11 +69,20 @@ export async function unzip(
             if (!existsSync(parentDir)) {
               mkdirSync(parentDir, { recursive: true });
             }
-            entry.pipe(createWriteStream(fullPathName));
+            const file = createWriteStream(fullPathName, {
+              mode: modes.get(entry.path),
+            });
+            writes.push(
+              new Promise((done, fail) =>
+                file.on('close', () => done(undefined)).on('error', fail),
+              ),
+            );
+            entry.pipe(file);
           }
         })
         .on('finish', () => {
-          resolve();
+          // Resolve only once every file is fully written
+          Promise.all(writes).then(() => resolve(), reject);
         })
         .on('error', reject);
     } else {
