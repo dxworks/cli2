@@ -13,7 +13,7 @@ instruments:
   - name: dxworks/honeydew
     asset: honeydew.zip
   - name: dxworks/jafax
-    asset: jafax.zip
+    asset: jafax-voyager.zip
   - name: dxworks/depminer
     asset: depminer-voyager.zip
   - name: dxworks/codeframe
