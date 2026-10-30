@@ -43,18 +43,24 @@ export class InstrumentService {
       barCompleteChar: Presets.shades_classic.barCompleteChar,
       barIncompleteChar: Presets.shades_classic.barIncompleteChar,
     });
-    await Promise.all(
+    const found = await Promise.all(
       instruments.map((instrument) =>
         this.downloadAndUnzip(instrument, multiProgressBar),
       ),
     );
     multiProgressBar.stop();
+    // A missing instrument fails the install instead of leaving it out silently
+    const missing = instruments.filter((_, i) => !found[i]);
+    if (missing.length)
+      throw new Error(
+        `No release found for: ${missing.map((it) => it.name).join(', ')}`,
+      );
   }
 
   private async downloadAndUnzip(
     instrument: InstrumentConfig,
     multiProgressBar: cliProgress.MultiBar,
-  ) {
+  ): Promise<boolean> {
     const singleBar = multiProgressBar.create(100, 0, {
       name: instrument.name,
       state: 'Getting Version',
@@ -84,8 +90,10 @@ export class InstrumentService {
       });
       fs.rmSync(zipFileName);
       singleBar?.update({ name: instrument.name, state: 'Done' });
+      return true;
     } else {
       singleBar?.update({ name: instrument.name, state: 'No release found' });
+      return false;
     }
   }
 
