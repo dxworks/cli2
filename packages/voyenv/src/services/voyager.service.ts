@@ -73,18 +73,15 @@ export class VoyagerService {
       ),
     );
     fs.rmSync(voyagerDir, { recursive: true, force: true });
-    fs.cpSync(
-      getAssetFile('install/default-config.yml'),
-      path.resolve(this.directory, configFile),
-    );
-    fs.cpSync(
-      getAssetFile('install/default-doctor.yml'),
-      path.resolve(this.directory, doctorFile),
-    );
-    fs.cpSync(
-      getAssetFile('install/default-mission.yml'),
-      path.resolve(this.directory, missionFile),
-    );
+    // The engine zip's own files win; the defaults only fill in what it lacks
+    [
+      ['install/default-config.yml', configFile],
+      ['install/default-doctor.yml', doctorFile],
+      ['install/default-mission.yml', missionFile],
+    ].forEach(([asset, file]) => {
+      const target = path.resolve(this.directory, file);
+      if (!fs.existsSync(target)) fs.cpSync(getAssetFile(asset), target);
+    });
     fs.chmodSync(path.resolve(this.directory, 'voyager.sh'), '755');
     progressBar.stop();
   }
