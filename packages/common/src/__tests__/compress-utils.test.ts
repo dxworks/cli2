@@ -9,7 +9,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import archiver from 'archiver';
+import { ZipArchive } from 'archiver';
 import { createWriteStream } from 'node:fs';
 
 describe('compress-utils', () => {
@@ -35,7 +35,7 @@ describe('compress-utils', () => {
   async function createTestZip(outputPath: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const output = createWriteStream(outputPath);
-      const archive = archiver('zip', { zlib: { level: 9 } });
+      const archive = new ZipArchive({ zlib: { level: 9 } });
 
       output.on('close', () => resolve());
       archive.on('error', (err) => reject(err));
